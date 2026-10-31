@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!--
+  豆瓣 Top 250 榜单条目的教学用简化 HTML。
+
+  结构取自指南 3.2 的「代码 3-1 豆瓣 Top250 榜单条目的最小 HTML」，
+  为了练习循环、缺失字段和分页选择器，额外补了第 2、3 个条目和 .paginator 容器。
+  它只用于离线练选择器（01_selector_playground.py），不是真实抓取结果。
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>豆瓣电影 Top 250</title>
+</head>
+<body>
+  <ol class="grid_view">
+    <li>
+      <div class="item">
+        <div class="pic">
+          <em class="">1</em>
+          <a href="https://movie.douban.com/subject/1292052/">
+            <img alt="肖申克的救赎" src="poster_1292052.jpg">
+          </a>
+        </div>
+        <div class="info">
+          <div class="hd">
+            <a href="https://movie.douban.com/subject/1292052/">
+              <span class="title">肖申克的救赎</span>
+              <span class="title">&nbsp;/&nbsp;The Shawshank Redemption</span>
+            </a>
+          </div>
+          <div class="bd">
+            <p>导演: 弗兰克·德拉邦特<br>1994&nbsp;/&nbsp;美国&nbsp;/&nbsp;犯罪 剧情</p>
+            <div class="star">
+              <span class="rating_num" property="v:average">9.7</span>
+              <span>3353799人评价</span>
+            </div>
+            <p class="quote"><span class="inq">希望让人自由。</span></p>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="item">
+        <div class="pic">
+          <em class="">2</em>
+          <a href="https://movie.douban.com/subject/1291546/">
+            <img alt="霸王别姬" src="poster_1291546.jpg">
+          </a>
+        </div>
+        <div class="info">
+          <div class="hd">
+            <a href="https://movie.douban.com/subject/1291546/">
+              <span class="title">霸王别姬</span>
+              <span class="title">&nbsp;/&nbsp;Farewell My Concubine</span>
+            </a>
+          </div>
+          <div class="bd">
+            <p>导演: 陈凯歌<br>1993&nbsp;/&nbsp;中国大陆&nbsp;/&nbsp;剧情 爱情 同性</p>
+            <div class="star">
+              <span class="rating_num" property="v:average">9.6</span>
+              <span>2317981人评价</span>
+            </div>
+            <p class="quote"><span class="inq">风华绝代。</span></p>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li>
+      <!-- 第 3 条故意没有 p.quote：用来说明「短评不是每部都有」 -->
+      <div class="item">
+        <div class="pic">
+          <em class="">3</em>
+          <a href="https://movie.douban.com/subject/1292720/">
+            <img alt="阿甘正传" src="poster_1292720.jpg">
+          </a>
+        </div>
+        <div class="info">
+          <div class="hd">
+            <a href="https://movie.douban.com/subject/1292720/">
+              <span class="title">阿甘正传</span>
+              <span class="title">&nbsp;/&nbsp;Forrest Gump</span>
+            </a>
+          </div>
+          <div class="bd">
+            <p>导演: 罗伯特·泽米吉斯<br>1994&nbsp;/&nbsp;美国&nbsp;/&nbsp;剧情 爱情</p>
+            <div class="star">
+              <span class="rating_num" property="v:average">9.5</span>
+              <span>2180000人评价</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ol>
+  <div class="paginator">
+    <span class="prev">&lt;前页</span>
+    <span class="next"><a href="?start=25&amp;filter=">后页&gt;</a></span>
+  </div>
+</body>
+</html>

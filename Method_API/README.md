@@ -64,8 +64,7 @@ Method_API/data/
 Method_API/data/
 ```
 
-指南 2.6 的示例用 `to_parquet` 存中间结果，但当前虚拟环境没有 `pyarrow`，因此脚本默认写 CSV。
-需要 Parquet 时执行 `pip install pyarrow`，再取消 `04_api_json_to_table.py` 里那两行注释。
+指南 2.6 的示例用 `to_parquet` 存中间结果；需要 Parquet 时取消 `04_api_json_to_table.py` 里那两行注释即可。
 
 ## 与表 2-4「API 取数检查清单」的对应
 

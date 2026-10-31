@@ -72,31 +72,42 @@ py -3.12 -m venv .venv      # 没有 py 启动器就写 python -m venv .venv
 
 ### 依赖安装
 
+每个目录的 `requirements.txt` 就是该目录的依赖清单（从各目录当前环境导出，版本固定），直接装即可：
+
 ```powershell
 # Method_API：官方 API
 cd Method_API
-.venv\Scripts\python.exe -m pip install requests pandas
+.venv\Scripts\python.exe -m pip install -r requirements.txt
 
 # Method_request+bs4：静态页抓取
 cd ..\Method_request+bs4
-.venv\Scripts\python.exe -m pip install requests beautifulsoup4 lxml
+.venv\Scripts\python.exe -m pip install -r requirements.txt
 
 # Method_Scrapy：框架
 cd ..\Method_Scrapy
-.venv\Scripts\python.exe -m pip install scrapy
+.venv\Scripts\python.exe -m pip install -r requirements.txt
 
 # Method_Playwright：浏览器自动化
 cd ..\Method_Playwright
-.venv\Scripts\python.exe -m pip install playwright requests beautifulsoup4 lxml
+.venv\Scripts\python.exe -m pip install -r requirements.txt
 .venv\Scripts\python.exe -m playwright install chromium
 ```
 
+各目录实际用到的包：
+
+| 目录 | 脚本直接 import | 清单里的其余内容 |
+| --- | --- | --- |
+| `Method_API` | `requests`、`pandas` | `numpy`/`python-dateutil`/`tzdata`（pandas 依赖）、`pyarrow`（可选，写 Parquet 用） |
+| `Method_request+bs4` | `requests`、`beautifulsoup4`、`lxml` | `pandas`/`numpy`（脚本未使用，可删） |
+| `Method_Scrapy` | `scrapy` | `Twisted`、`parsel`、`lxml`、`w3lib` 等框架依赖 |
+| `Method_Playwright` | `playwright`、`requests`、`beautifulsoup4`、`lxml` | `greenlet`、`pyee` 等 playwright 依赖 |
+
 说明：
 
-- 各目录里的 `requirements.txt` 是**整个环境的完整快照**（含 jupyter 等），不是最小依赖，不建议
-  `pip install -r`；按上面的最小命令装就够。
-- `pandas` 会自动带上 `numpy`；`urllib3` 是 `requests` 的依赖，不用单列。
-- `pyarrow` 只有把 `04_api_json_to_table.py` 里 `to_parquet` 的两行注释打开时才需要。
+- 清单是从各目录当前环境导出的，装完版本一致；`pandas` 会自动带上 `numpy`，
+  `urllib3` 是 `requests` 的依赖，都不用单列。
+- 想更精简：`Method_request+bs4` 清单里的 `pandas`/`numpy` 脚本并没有用到，可以删掉再装。
+- `pyarrow` 已经装好；`04_api_json_to_table.py` 默认仍写 CSV，取消 `to_parquet` 那两行注释即可改存 Parquet。
 - 浏览器只在 Playwright 目录需要，Chromium 约 150–300 MB，下载到 `%LOCALAPPDATA%\ms-playwright`。
 
 ## 快速开始
@@ -134,7 +145,8 @@ cd ..\..\Method_Playwright
   分页、429 退避、有限重试；原始 JSON 落盘与 `manifest`（URL、时间、sha256）。
 - **怎么跑**：`01` 纯本地拆 URL → `02` 世界银行 → `03` 分页与重试 → `04` 摊平成表 → `05` FRED（需
   `$env:FRED_API_KEY`，免费申请）。
-- **产出**：`Method_API/data/raw/wb_gdp.json`、`wb_gdp.manifest.json`、`data/interim/wb_gdp.csv`。
+- **产出**：`Method_API/data/raw/wb_gdp.json`、`wb_gdp.manifest.json`、`data/interim/wb_gdp.csv`
+  （环境里已装 `pyarrow`，取消 `04` 里 `to_parquet` 两行注释即可改存 Parquet）。
 - **重点**：key 只放环境变量；缺失值转 `NaN` 而不是补 0；分页按 `meta["pages"]` 判断末页。
 
 ### Method_request+bs4 —— requests + BeautifulSoup（第 3–4 章）
@@ -222,7 +234,7 @@ Method_Playwright/data/
 | `scrapy` 提示找不到项目 | 必须 `cd` 到有 `scrapy.cfg` 的 `Method_Scrapy\douban_top250` |
 | `scrapy` 报 `UnicodeDecodeError` 读 `scrapy.cfg` | 这个文件要保持纯 ASCII（Scrapy 用系统编码读它） |
 | FRED 直接退出并提示设置环境变量 | `$env:FRED_API_KEY = "你的 key"`，这是代码的刻意设计 |
-| `to_parquet` 报错 | 装 `pyarrow`，或直接用默认的 CSV |
+| 想改存 Parquet | 环境已装 `pyarrow`，取消 `04_api_json_to_table.py` 里 `to_parquet` 两行注释即可 |
 | 豆瓣返回 403 / 验证页 | 停止采集，降低频率；不要换代理硬绕 |
 | Excel 打开 CSV 乱码 | 用 `utf-8-sig` 写文件（项目里的导出已是） |
 

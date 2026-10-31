@@ -115,7 +115,7 @@ def save_interim(df, stem="wb_gdp"):
     # 纯程序读取时用 encoding="utf-8" 也可以（BOM 会被自动跳过）。
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
 
-    # 需要 Parquet（更省空间、保留类型）时：先 pip install pyarrow，再启用下面两行
+    # 需要 Parquet（更省空间、保留类型）时，启用下面两行即可
     # parquet_path = INTERIM_DIR / f"{stem}.parquet"
     # df.to_parquet(parquet_path, index=False)
 
